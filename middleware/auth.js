@@ -2,14 +2,16 @@ const jwt = require("jsonwebtoken")
 let { COMPANY, JOBSEEKER } = require("../constansts/role")
 const checkLogin = (req, res, next) => {
     let user = null
-    let token = req.headers?.authorization?.split(" ")[1]
+    const token = req.headers?.authorization?.split(" ")[1]
     try {
-        user = jwt.verify(token, process.env.SECRET_KEY);
+        verified_user = jwt.verify(token, process.env.SECRET_KEY);
+        user = verified_user.user
     } catch (err) {
         next(err)
     }
     if (user) {
         req.user = user
+        delete req.user.password
         next()
     }
     else {
@@ -19,8 +21,9 @@ const checkLogin = (req, res, next) => {
 
 
 const isCompany = (req, res, next) => {
-    let { user } = req.user
-    if (user.role === COMPANY) {
+    console.log(req.user)
+    let { role } = req.user
+    if (role === COMPANY) {
         next()
     } else {
         res.status(403).send({
@@ -31,10 +34,8 @@ const isCompany = (req, res, next) => {
 
 }
 const isJobseeker = (req, res, next) => {
-    let { user } = req.user
-    console.log(user.role)
-
-    if (user.role === JOBSEEKER) {
+    let { role } = req.user
+    if (role === JOBSEEKER) {
         next()
     } else {
         res.status(403).send({

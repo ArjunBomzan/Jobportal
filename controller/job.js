@@ -18,11 +18,13 @@ const createJob = async (req, res, next) => {
             res.status(400).send(error?.details)
             return
         }
-        let job = req.body
-        console.log(job)
-
-        let created = await Job.create({job})
-
+        let created = await Job.create({ ...req.body, created_by: req.user._id })
+        if (created) {
+            res.send({
+                message: "Job creation success",
+                created
+            })
+        }
     } catch (err) {
         next(err)
     }

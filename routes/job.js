@@ -7,4 +7,3 @@ const router=express.Router()
 router.post("",checkLogin,isCompany,createJob)
 
 module.exports= router
-
