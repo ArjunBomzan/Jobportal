@@ -21,7 +21,6 @@ const checkLogin = (req, res, next) => {
 
 
 const isCompany = (req, res, next) => {
-    console.log(req.user)
     let { role } = req.user
     if (role === COMPANY) {
         next()

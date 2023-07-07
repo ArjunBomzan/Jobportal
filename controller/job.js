@@ -1,5 +1,13 @@
 const Job = require("../modal/Job")
 const Joi = require("joi")
+const GetJob = async (req, res) => {
+    const job = await Job.find()
+    res.send(job)
+}
+
+
+
+
 const Jobschema = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().required(),
@@ -30,5 +38,6 @@ const createJob = async (req, res, next) => {
     }
 }
 module.exports = {
-    createJob
+    createJob,
+    GetJob
 }
