@@ -14,14 +14,18 @@ const JobSchema = new Schema({
     category: {
         type: String,
     },
+    numberofvacancy: {
+        type: Number
+    },
     location: {
         type: String,
-     
+
     },
     experience: {
         type: String,
         required: true,
     },
+
     type: {
         type: String,
         enum: ['fulltime', 'parttime', 'contract'],
@@ -30,7 +34,13 @@ const JobSchema = new Schema({
         },
         required: true
     },
-
+    joblevel: {
+        type:String,
+        enum: ['fresher', 'junior', 'mid', 'senior'],
+        set: function (value) {
+            return value.toLowerCase()
+        }
+    },
     salaryRange: {
         from: {
             type: Number
@@ -43,9 +53,7 @@ const JobSchema = new Schema({
     created_by: {
         type: ObjectId,
         ref: "User"
-    }
-
-
+    },
 
 }, {
     timestamps: true

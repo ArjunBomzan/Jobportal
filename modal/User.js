@@ -34,6 +34,12 @@ const UserSchema = new Schema({
             return value.toLowerCase()
         },
         required: true
+    },
+    website:{
+        teype:String
+    },
+    image:{
+        type:String
     }
 }
     , {

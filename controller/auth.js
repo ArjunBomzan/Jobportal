@@ -53,24 +53,28 @@ const login = async (req, res, next) => {
             return
         }
         let user = await User.findOne({ email: req.body.email })
-        let token = Jwt.sign({ user }, process.env.SECRET_KEY);
-        res.send({
-            message:"User Loged in",
-            token
-        })
-     
+        if (user) {
+            const matched = await bcrypt.compare(req.body.password, user.password);
+            if (matched) {
 
-
-    } catch (err) {
+                let userObj = user.toObject()
+                delete userObj.password;
+                let token = Jwt.sign({ user }, process.env.SECRET_KEY);
+                res.send({
+                    message: "User Loged in",
+                    token
+                })
+            } else {
+                res.status(401).send({
+                    msg: "Invalid Credentaions"
+                })
+            }
+        }
+    }
+    catch (err) {
         next(err)
     }
 }
-
-
-
-
-
-
 
 module.exports = {
     signup,
